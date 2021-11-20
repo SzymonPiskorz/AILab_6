@@ -17,6 +17,7 @@ private:
 	bool m_isGoal;
 	bool m_isStart;
 	bool m_marked;
+	int m_row, m_col;
 
 	void initText();
 	void initSprite();
@@ -24,7 +25,7 @@ private:
 
 public:
 	Tile(int t_cost, sf::Font& t_font, bool t_isPassable);
-	Tile(int t_cost, sf::Vector2f t_goal, sf::Vector2f t_position, sf::Font& t_font, bool t_isPassable);
+	Tile(int t_cost, sf::Vector2f t_goal, sf::Vector2f t_position, sf::Font& t_font, bool t_isPassable, int t_row, int t_col);
 
 	void setID(int t_id);
 	int getID();

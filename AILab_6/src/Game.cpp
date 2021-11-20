@@ -17,11 +17,15 @@
 /// load and setup thne image
 /// </summary>
 Game::Game() :
-	m_window{ sf::VideoMode{ 800U, 600U, 32U }, "SFML Game" },
-	m_exitGame{false} //when true game will exit
+	m_window{ sf::VideoMode{ 1200U, 1200U, 32U }, "SFML Game" },
+	m_exitGame{false}, //when true game will exit
+	m_flowField{ 50, 50 }
 {
-	setupFontAndText(); // load font 
-	setupSprite(); // load texture
+
+	m_flowField.setGoal({ 39, 18 }, true);
+	m_flowField.generate();
+
+	m_flowField.drawPath();
 }
 
 /// <summary>
@@ -77,6 +81,33 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		else if (sf::Event::MouseButtonPressed == newEvent.type)
+		{
+			sf::Vector2i mouseRowColPos = sf::Vector2i(newEvent.mouseButton.x / static_cast<int>(24), newEvent.mouseButton.y / static_cast<int>(24));
+
+			if (sf::Mouse::Button::Left == newEvent.mouseButton.button)
+			{
+				m_flowField.setGoal(mouseRowColPos, true);
+				m_flowField.drawPath();
+			}
+			else if (sf::Mouse::Button::Right == newEvent.mouseButton.button)
+			{
+				if (m_flowField.getTile(mouseRowColPos).m_cost == std::numeric_limits<int>::max())
+				{
+					m_flowField.clearTile(mouseRowColPos, true);
+				}
+				else
+				{
+					m_flowField.setBlocked(mouseRowColPos, true);
+					m_flowField.drawPath();
+				}
+			}
+			else if (sf::Mouse::Button::Middle == newEvent.mouseButton.button)
+			{
+				m_flowField.drawPath(m_flowField.getPath(mouseRowColPos));
+			}
+
+		}
 	}
 }
 
@@ -111,19 +142,6 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color::Black);
+	m_window.draw(m_flowField);
 	m_window.display();
-}
-
-/// <summary>
-/// load the font and setup the text message for screen
-/// </summary>
-void Game::setupFontAndText()
-{
-}
-
-/// <summary>
-/// load the texture and setup the sprite for the logo
-/// </summary>
-void Game::setupSprite()
-{
 }

@@ -7,11 +7,13 @@ Tile::Tile(int t_cost, sf::Font& t_font, bool t_isPassable) :
 	setCost(t_cost);
 }
 
-Tile::Tile(int t_cost, sf::Vector2f t_goal, sf::Vector2f t_position, sf::Font& t_font, bool t_isPassable) :
+Tile::Tile(int t_cost, sf::Vector2f t_goal, sf::Vector2f t_position, sf::Font& t_font, bool t_isPassable, int t_row, int t_col) :
 	m_font{ t_font },
 	m_isPassable{ t_isPassable },
 	m_pos{ t_position },
-	m_goalPos{ t_goal }
+	m_goalPos{ t_goal },
+	m_col{ t_col },
+	m_row{ t_row }
 {
 	setCost(t_cost);
 }

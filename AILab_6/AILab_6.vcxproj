@@ -33,14 +33,13 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\FlowFieldGraph.h" />
     <ClInclude Include="include\Game.h" />
-    <ClInclude Include="include\Tile.h" />
-    <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FlowFieldGraph.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Tile.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

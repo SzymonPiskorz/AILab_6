@@ -10,6 +10,7 @@
 /// Don't forget the endif at the bottom
 /// </summary>
 #include <SFML/Graphics.hpp>
+#include "FlowFieldGraph.h"
 
 class Game
 {
@@ -27,12 +28,11 @@ private:
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
-	
-	void setupFontAndText();
-	void setupSprite();
 
 	sf::RenderWindow m_window; // main SFML window
 	bool m_exitGame; // control exiting game
+
+	FlowFieldGraph m_flowField;
 
 };
 
