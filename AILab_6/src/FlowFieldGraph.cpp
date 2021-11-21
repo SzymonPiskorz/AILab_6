@@ -107,18 +107,18 @@ void FlowFieldGraph::generate()
 std::list<sf::Vector2i> const* FlowFieldGraph::getPath(sf::Vector2i t_start)
 {
 	m_start = t_start;
-	if (t_start.x >= m_tiles.size() && t_start.y >= m_tiles.at(0).size())
+	if (m_start.x >= m_tiles.size() && m_start.y >= m_tiles.at(0).size())
 	{
 		return nullptr;
 	}
 
-	if (getTile(t_start).m_cost == std::numeric_limits<int>::max() && t_start == m_goal)
+	if (getTile(m_start).m_cost == std::numeric_limits<int>::max() && m_start == m_goal)
 	{
 		return nullptr;
 	}
 
 	std::list<sf::Vector2i>* path = new std::list<sf::Vector2i>();
-	path->push_back(getTile(t_start).m_neighbour);
+	path->push_back(getTile(m_start).m_neighbour);
 
 	while (path->back() != m_goal)
 	{
@@ -210,37 +210,23 @@ void FlowFieldGraph::drawPath(std::list<sf::Vector2i>const* t_path)
 	{
 		for (int y = 0; y < tiles.at(x).size(); ++y)
 		{
-			// Continues to the next cell if a wall.
 			if (tiles.at(x).at(y).m_cost == std::numeric_limits<int>::max()) continue;
 
-			// Takes some cell info for ease of access.
 			int cost = tiles.at(x).at(y).m_cost;
 			sf::Vector2f position{ static_cast<float>(x) * 24.0f, static_cast<float>(y) * 24.0f};
-
-			// Sets up the text for this cell.
 			m_text.setPosition(position + sf::Vector2f{ 24, 24 }/ 2.0f);
 			m_text.setString(std::to_string(cost));
 			sf::FloatRect rect = m_text.getGlobalBounds();
 			m_text.setOrigin(rect.width / 2.0f, rect.height / 2.0f);
-
-			// Sets up the rect for this cell.
 			rectangle.setPosition(position);
-			uint8_t value = std::max(50 - static_cast<int>(cost), 0) * 5u;
-			rectangle.setFillColor(sf::Color{ 0u, 0u, value });
-
-			// Draws the text and rect.
+			rectangle.setFillColor(sf::Color::Blue);
 			m_renderTexture.draw(rectangle);
 			m_renderTexture.draw(m_text);
 
-			// Adds the flow lines.
 			sf::Vector2f neighbour = static_cast<sf::Vector2f>(tiles.at(x).at(y).m_neighbour);
 			sf::Vector2f neighbourPosition = sf::Vector2f(static_cast<float>(neighbour.x) * 24 ,static_cast<float>(neighbour.y) * 24);
-
-			// Adds the start of the line as the tile position.
-			lines.append({ position + sf::Vector2f{ 24, 24 } / 2.0f, sf::Color::Blue });
-
-			// Adds the end of the line as the best neighbours position.
-			lines.append({ neighbourPosition + sf::Vector2f{ 24, 24 } / 2.0f, sf::Color::White });
+			lines.append(sf::Vertex{ position + sf::Vector2f{ 24, 24 } / 2.0f, sf::Color::Blue });
+			lines.append(sf::Vertex{ neighbourPosition + sf::Vector2f{ 24, 24 } / 2.0f, sf::Color::White });
 		}
 	}
 
@@ -250,12 +236,11 @@ void FlowFieldGraph::drawPath(std::list<sf::Vector2i>const* t_path)
 		{
 			sf::Vector2f position{ static_cast<float>(it->x) * 24.0f,static_cast<float>(it->y) * 24.0f};
 			rectangle.setPosition(position);
-			rectangle.setFillColor(sf::Color{ 0, 255, 0 });
+			rectangle.setFillColor(sf::Color::Green);
 			m_renderTexture.draw(rectangle);
 		}
 	}
 
 	m_renderTexture.draw(lines);
 	m_renderTexture.display();
-	sf::FloatRect bounds = m_renderTextureSprite.getGlobalBounds();
 }

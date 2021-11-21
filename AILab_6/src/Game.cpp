@@ -90,7 +90,7 @@ void Game::processEvents()
 				m_flowField.setGoal(mouseRowColPos, true);
 				m_flowField.drawPath();
 			}
-			else if (sf::Mouse::Button::Right == newEvent.mouseButton.button)
+			else if (sf::Mouse::Button::Right == newEvent.mouseButton.button || sf::Mouse::Button::Right == newEvent.MouseButtonPressed)
 			{
 				if (m_flowField.getTile(mouseRowColPos).m_cost == std::numeric_limits<int>::max())
 				{
